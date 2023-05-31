@@ -44,7 +44,8 @@
                     <th>Product Price</th>
                     <th>Product Quantity</th>
                     <th>Product Category</th>
-                    <th>Discount Price</th>
+                    <th>Action</th>   
+                    {{-- <th class="btn btn-danger">Delete</th> --}}
                   </tr>
                 </thead> 
                 @foreach($product as $product) 
@@ -58,7 +59,7 @@
                   <td>{{$product->discount_price}}</td>
                   <td>
                     <img  src="/product/{{$product->image}}">
-                  </td>
+                  </td>                  
                 </tr>
               </tbody>
                @endforeach

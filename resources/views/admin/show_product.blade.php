@@ -34,8 +34,16 @@
       
       <div class="main-panel ">
         <div class="content-wrapper">
+          @if(session()->has('deletemessage'))
+               <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" area-hidden="true">X</button>
+                  {{session()->get('deletemessage')}}
+               </div>
+
+
+              @endif
               <h2 class="h2_font">All Products</h2>
-            <table class="table table-striped center">
+            <table class="table table-bordered center">
                 <thead class="thead-dark">
                   <tr>
                     <th>Product Title</th>
@@ -44,6 +52,7 @@
                     <th>Product Price</th>
                     <th>Product Quantity</th>
                     <th>Product Category</th>
+                    <th>Product</th>
                     <th>Action</th>   
                     {{-- <th class="btn btn-danger">Delete</th> --}}
                   </tr>
@@ -59,6 +68,10 @@
                   <td>{{$product->discount_price}}</td>
                   <td>
                     <img  src="/product/{{$product->image}}">
+                  </td>
+                  <td>
+                   <a class="btn btn-success" href="{{url('/edit_product',$product->id)}}">edit</a>
+                   <a class="btn btn-danger" href="{{url('delete_product',$product->id)}}">delete</a>      
                   </td>                  
                 </tr>
               </tbody>

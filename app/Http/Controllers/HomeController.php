@@ -8,13 +8,16 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Carts;
+use App\Models\Order;
+use Session;
+use Stripe;
 
 class HomeController extends Controller
 {
     //
 
     public function index(){
-        $product = product::paginate(1);
+        $product = product::paginate(3);
         return view('home.userpage', compact('product'));
     }
     public function redirect(){
@@ -24,7 +27,7 @@ class HomeController extends Controller
             return view('admin.home');
         }
         else{
-            $product = product::paginate(1);
+            $product = product::paginate(3);
             return view('home.userpage', compact('product'));   
         }
     }
@@ -78,5 +81,62 @@ class HomeController extends Controller
 
     }
 
-   
+    public function show_cart(){
+        // return view('home.cart_page');
+         if(Auth::id())
+         {
+            $id = Auth::user()->id;
+            $cart = carts::where('user_id','=',$id)->get();
+            return view('home.show_cart', compact('cart'));    
+         }
+         else{
+            return redirect('login');
+         }
+        
+    }
+
+    public function remove_product($id){
+        $cart = carts::find($id);
+        
+        $cart->delete();
+        return redirect()->back()->with('deletemessage','Product removed from cart Successfully');
+
+    }
+    public function product_cod()
+    {
+        $user = Auth::user();
+        $user_id = $user->id;
+        
+        $data = carts::where('user_id','=',$user_id)->get();
+
+        foreach ( $data as $data)
+        {
+            $order = new order();
+            $order->name=$data->name;
+            $order->email=$data->email;
+            $order->phone=$data->phone;
+            $order->address=$data->address;
+            $order->user_id=$data->user_id;
+            $order->product_title=$data->product_title;
+            $order->price=$data->price;
+            $order->quantity=$data->quantity;
+            $order->image=$data->image;
+            $order->product_id=$data->product_id;
+            $order->payment_status = 'cash on delivery';
+            $order->delivery_status = 'processing';
+            $order->save();
+            $cart_id = $data->id;
+            $cart=carts::find($cart_id);
+            $cart->delete();
+
+        }
+        return redirect()->back()->with('message','Product Orderd Successfully');
+        // return  json_encode($data);
+    }
+
+    public function stripe($totalprice)
+    {
+        return view('home.stripe',compact('totalprice'));
+    } 
+    
 }

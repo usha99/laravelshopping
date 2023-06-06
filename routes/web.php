@@ -53,4 +53,8 @@ Route::get('/orders_rec',[AdminController::class,'orders_rec']);
 Route::get('/delivered/{id}',[AdminController::class,'delivered']);
 Route::get('/download_pdf/{id}',[AdminController::class,'download_pdf']);
 
+Route::get('/send_email/{id}',[AdminController::class,'send_email']);
+Route::post('/send_user_email/{id}',[AdminController::class,'send_user_email']);
+Route::get('/search_order',[AdminController::class,'search_order']);
+
 

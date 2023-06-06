@@ -34,7 +34,7 @@
      
       <div class="main-panel ">
         <div class="content-wrapper">
-        </div>
+        
   
         @if(session()->has('deletemessage'))
         <div class="alert alert-danger">
@@ -45,6 +45,12 @@
 
        @endif
        <h2 class="h2_font">All Orders</h2>
+       <div style="padding-left: 400px; padding-bottom: 30px;">
+        <form action="{{url('search_order')}}" method="GET">
+          <input style="color:black" type="text" name="search" placeholder="search...">
+          <input type="submit" value="Search" class="btn-outline-primary">
+        </form>
+       </div>
      <table class="table table-bordered center">
          <thead class="thead-dark">
            <tr>
@@ -58,10 +64,11 @@
              <th>Delivery Status</th>
              <th>Image</th>
              <th>Delivered</th> 
-             <th>Action</th>
+             <th>Print PDF</th>
+             <th>Send Email</th>
            </tr>
          </thead> 
-         @foreach($order as $order) 
+         @forelse($order as $order) 
          <tbody>
          <tr>
            <td>{{$order->name }}</td>
@@ -85,16 +92,23 @@
         </td> 
         <td>
         <a class="btn btn-secondary" href="{{url('download_pdf',$order->id)}}">Download PDF</a>  
+        </td>
+        <td>
+        <a class="btn btn-info" href="{{url('send_email',$order->id)}}">Send Email</a>  
         </td>              
          </tr>
        </tbody>
-        @endforeach
+       
+       @empty
+       <div>
+        No data found
+       </div>
+
+        @endforelse
        </table>
 
-
-
-
       </div>
+    </div>
     @include('admin.script')
   </body>
 </html>

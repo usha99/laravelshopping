@@ -30,7 +30,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
-Route::get('/redirect',[HomeController::class,'redirect']);
+Route::get('/redirect',[HomeController::class,'redirect'])->middleware('auth','verified');
 Route::get('/view_category',[AdminController::class,'view_category']);
 Route::post('/add_category',[AdminController::class,'add_category']);
 Route::get('/delete_cat/{id}',[AdminController::class,'delete_cat']);
@@ -47,7 +47,10 @@ Route::get('/remove_product/{id}',[HomeController::class,'remove_product']);
 Route::get('/product_cod',[HomeController::class,'product_cod']);
 Route::get('/stripe/{totalprice}',[HomeController::class,'stripe']);
 
-Route::post('stripe/{}',[HomeController::class,'stripePost'])->name('stripe.post');
+Route::post('stripe/{totalprice}',[HomeController::class,'stripePost'])->name('stripe.post');
 
+Route::get('/orders_rec',[AdminController::class,'orders_rec']);
+Route::get('/delivered/{id}',[AdminController::class,'delivered']);
+Route::get('/download_pdf/{id}',[AdminController::class,'download_pdf']);
 
 

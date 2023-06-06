@@ -16,7 +16,7 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default credit-card-box">
                 <div class="panel-heading display-table" >
-                        <h3 class="panel-title" >Payment Details {{ $totalprice }}</h3>
+                        <h3 class="panel-title" >Payment Details ${{ $totalprice }}</h3>
                 </div>
                 <div class="panel-body">
     
@@ -79,7 +79,7 @@
     
                         <div class="row">
                             <div class="col-xs-12">
-                                <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now {{$totalprice}}</button>
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now ${{$totalprice}}</button>
                             </div>
                         </div>
                             

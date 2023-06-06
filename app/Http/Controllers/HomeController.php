@@ -138,5 +138,46 @@ class HomeController extends Controller
     {
         return view('home.stripe',compact('totalprice'));
     } 
+    public function stripePost(Request $request,$totalprice)
+    {
+        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
     
+        Stripe\Charge::create ([
+                "amount" => $totalprice * 100,
+                "currency" => "usd",
+                "source" => $request->stripeToken,
+                "description" => "Test payment from " 
+        ]);
+
+        $user = Auth::user();
+        $user_id = $user->id;
+        
+        $data = carts::where('user_id','=',$user_id)->get();
+
+        foreach ( $data as $data)
+        {
+            $order = new order();
+            $order->name=$data->name;
+            $order->email=$data->email;
+            $order->phone=$data->phone;
+            $order->address=$data->address;
+            $order->user_id=$data->user_id;
+            $order->product_title=$data->product_title;
+            $order->price=$data->price;
+            $order->quantity=$data->quantity;
+            $order->image=$data->image;
+            $order->product_id=$data->product_id;
+            $order->payment_status = 'Paid';
+            $order->delivery_status = 'processing';
+            $order->save();
+            $cart_id = $data->id;
+            $cart=carts::find($cart_id);
+            $cart->delete();
+
+        }
+      
+        Session::flash('success', 'Payment successful!');
+              
+        return back();
+    }
 }

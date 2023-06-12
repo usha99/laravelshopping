@@ -57,4 +57,8 @@ Route::get('/send_email/{id}',[AdminController::class,'send_email']);
 Route::post('/send_user_email/{id}',[AdminController::class,'send_user_email']);
 Route::get('/search_order',[AdminController::class,'search_order']);
 
+Route::get('/show_order',[HomeController::class,'show_order']);
+
+Route::get('/cancel_order/{id}',[HomeController::class,'cancel_order']);
+
 

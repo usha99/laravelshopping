@@ -55,8 +55,7 @@ class AdminController extends Controller
 
         $request->image->move('product', $imagename);
         $product->image = $imagename;
-
-
+        
         $product->save();
         return redirect()->back()->with('message', 'Product Added Successfully');
 
